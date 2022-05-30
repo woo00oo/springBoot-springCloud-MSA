@@ -2,10 +2,7 @@ package com.example.restfulwebservice.user;
 
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Service
 public class UserDaoService {
@@ -32,11 +29,10 @@ public class UserDaoService {
         return user;
     }
 
-    public User findOne(Integer id) {
+    public Optional<User> findOne(Integer id) {
         return users.stream()
                 .filter(u -> u.getId().equals(id))
-                .findAny()
-                .orElseThrow(NoSuchElementException::new);
+                .findAny();
     }
 
 }

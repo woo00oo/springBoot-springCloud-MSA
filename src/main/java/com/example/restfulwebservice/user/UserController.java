@@ -7,6 +7,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,7 +21,8 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public User retrieveUser(@PathVariable Integer id) {
-        return service.findOne(id);
+        Optional<User> optionalUser = service.findOne(id);
+        return optionalUser.orElseThrow(() -> new UserNotFoundException(String.format("ID[%s] not found", id)));
     }
 
     @PostMapping("/users")
