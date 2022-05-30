@@ -35,4 +35,15 @@ public class UserDaoService {
                 .findAny();
     }
 
+    public User deleteById(Integer id) {
+        Optional<User> optionalUser = findOne(id);
+
+        return optionalUser
+                .map(user -> {
+                    users.remove(user);
+                    return user;
+                })
+                .orElseThrow(() -> new UserNotFoundException(String.format("ID[%s] not found", id)));
+    }
+
 }
