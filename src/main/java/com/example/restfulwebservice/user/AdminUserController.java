@@ -36,7 +36,10 @@ public class AdminUserController {
         return mapping;
     }
 
-    @GetMapping("/v1/users/{id}")
+    //@GetMapping("/v1/users/{id}")
+    //@GetMapping(value = "/users/{id}/", params = "version=1")
+    //@GetMapping(value = "/users/{id}", headers = "X-API-VERSION=1")
+    @GetMapping(value = "/users/{id}", produces = "application/vnd.company.appv1+json")
     public MappingJacksonValue retrieveUserV1(@PathVariable Integer id) {
         Optional<User> optionalUser = service.findOne(id);
 
@@ -54,7 +57,10 @@ public class AdminUserController {
         return mapping;
     }
 
-    @GetMapping("/v2/users/{id}")
+    //@GetMapping("/v2/users/{id}") URI 를 통한 버전 관리
+    //@GetMapping(value = "/users/{id}/", params = "version=2") //request param을 통한 버전 관리
+    //@GetMapping(value = "/users/{id}", headers = "X-API-VERSION=2") //http 헤더를 통한 버전 관리
+    @GetMapping(value = "/users/{id}", produces = "application/vnd.company.appv2+json")
     public MappingJacksonValue retrieveUserV2(@PathVariable Integer id) {
         Optional<User> optionalUser = service.findOne(id);
 
