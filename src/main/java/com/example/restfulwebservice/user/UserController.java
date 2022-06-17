@@ -1,14 +1,24 @@
 package com.example.restfulwebservice.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
+import java.net.URL;
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,9 +31,18 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public User retrieveUser(@PathVariable Integer id) {
+    public EntityModel<User> retrieveUser(@PathVariable Integer id) {
         Optional<User> optionalUser = service.findOne(id);
-        return optionalUser.orElseThrow(() -> new UserNotFoundException(String.format("ID[%s] not found", id)));
+
+        return optionalUser
+                .map(u -> {
+                    //HATEOAS
+                    EntityModel<User> model = EntityModel.of(u);
+                    WebMvcLinkBuilder linkTo = linkTo(methodOn(this.getClass()).retrieveAllUsers());
+                    model.add(linkTo.withRel("all-users"));
+                    return model;
+                })
+                .orElseThrow(() -> new UserNotFoundException(String.format("ID[%s] not found", id)));
     }
 
     @PostMapping("/users")
