@@ -33,7 +33,6 @@ public class UserController {
     @GetMapping("/users/{id}")
     public EntityModel<User> retrieveUser(@PathVariable Integer id) {
         Optional<User> optionalUser = service.findOne(id);
-
         return optionalUser
                 .map(u -> {
                     //HATEOAS
