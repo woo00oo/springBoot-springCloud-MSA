@@ -24,7 +24,7 @@ import java.util.Date;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Integer id;
 
     @Size(min = 2, message = "Name은 2글자 이상 입력해 주세요.")
