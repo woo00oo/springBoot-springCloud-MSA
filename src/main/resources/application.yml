@@ -15,3 +15,14 @@ spring:
 #    user:
 #      name: username
 #      password: 123456
+  jpa:
+    show-sql: true
+
+  h2:
+    console:
+      enabled: true
+
+  datasource:
+    url : jdbc:h2:tcp://localhost/~/data/springdb
+    username: sa
+    password:
